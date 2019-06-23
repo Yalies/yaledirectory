@@ -9,7 +9,7 @@ class Person(dict):
 
 
 class YaleDirectory:
-    API_TARGET = 'https://directory.yale.edu/'
+    API_ROOT = 'https://directory.yale.edu/'
 
     def __init__(self):
         pass
@@ -20,10 +20,8 @@ class YaleDirectory:
 
         :param params: dictionary of custom params to add to request.
         """
-        params.update({
-            'mode': 'json',
-        })
-        request = requests.get(self.API_TARGET, params=params)
+        request = requests.get(self.API_ROOT + endpoint, params=params)
+        print(request.text)
         if request.ok:
             return request.json()
         else:
