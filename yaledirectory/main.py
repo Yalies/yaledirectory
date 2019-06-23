@@ -21,7 +21,19 @@ class YaleDirectory:
         :param params: dictionary of custom params to add to request.
         """
         request = requests.get(self.API_ROOT + endpoint, params=params)
-        print(request.text)
+        if request.ok:
+            return request.json()
+        else:
+            # TODO: Can we be more helpful?
+            raise Exception('API request failed. Data returned: ' + request.text)
+
+    def post(self, endpoint: str, data: dict = {}):
+        """
+        Make a POST request to the API.
+
+        :param params: dictionary of custom data to add to request.
+        """
+        request = requests.post(self.API_ROOT + endpoint, json=data)
         if request.ok:
             return request.json()
         else:
@@ -29,4 +41,10 @@ class YaleDirectory:
             raise Exception('API request failed. Data returned: ' + request.text)
 
     def search(self, name: str):
-        return self.get('suggest', {'q': name})
+        return self.get('suggest', {'q': name})['Records']['Record']
+
+    # TODO: unacceptable name
+    """
+    def request(self, name: str):
+        return self.post('api', {'peoplesearch': [{'netid': '', 'queryType': 'term', 'query': [{'pattern': 'Erik'}]}]})
+    """

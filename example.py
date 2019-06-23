@@ -5,3 +5,4 @@ api = yaledirectory.YaleDirectory()
 
 from pprint import pprint
 pprint(api.search('Erik'))
+pprint(api.request('Erik'))
