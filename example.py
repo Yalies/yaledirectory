@@ -4,6 +4,6 @@ import yaledirectory
 api = yaledirectory.YaleDirectory()
 
 from pprint import pprint
-results = api.search('Erik')
+results = api.search('Erik Boesen')
 for person in results:
     print(f'{person.display_name} {person.residential_college_name}')
