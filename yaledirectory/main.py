@@ -7,6 +7,20 @@ class Person(dict):
         self.update(raw)
         self.update(self.__dict__)
 
+        self.directory_title = raw['DirectoryTitle']
+        self.display_name = raw['DisplayName']
+        self.first_name = raw['FirstName']
+        self.known_as = raw['KnownAs']
+        self.last_name = raw['LastName']
+        self.netid = raw['NetId']
+        self.phone_number = raw['PhoneNumber']
+        self.primary_organization_name = raw['PrimaryOrganizationName']
+        self.primary_school_code = raw['PrimarySchoolCode']
+        self.primary_school_name = raw['PrimarySchoolName']
+        self.student_curriculum = raw['StudentCurriculum']
+        self.student_expeccted_graduation_year = raw['StudentExpectedGraduationYear']
+        self.upi = raw['UPI']
+
 
 class YaleDirectory:
     API_ROOT = 'https://directory.yale.edu/'
@@ -41,7 +55,7 @@ class YaleDirectory:
             raise Exception('API request failed. Data returned: ' + request.text)
 
     def search(self, name: str):
-        return self.get('suggest', {'q': name})['Records']['Record']
+        return [Person(raw) for raw in self.get('suggest', {'q': name})['Records']['Record']]
 
     # TODO: unacceptable name
     """
