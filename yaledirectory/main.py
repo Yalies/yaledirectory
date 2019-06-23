@@ -20,7 +20,7 @@ class Person(dict):
         self.primary_school_name = raw.get('PrimarySchoolName')
         self.residential_college_name = raw.get('ResidentialCollegeName')
         self.student_curriculum = raw.get('StudentCurriculum')
-        self.student_expeccted_graduation_year = raw.get('StudentExpectedGraduationYear')
+        self.student_expected_graduation_year = raw.get('StudentExpectedGraduationYear')
         self.upi = raw.get('UPI')
 
 
