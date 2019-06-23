@@ -57,7 +57,8 @@ class YaleDirectory:
             raise Exception('API request failed. Data returned: ' + request.text)
 
     def search(self, name: str):
-        results = self.get('suggest', {'q': name})['Records']
+        # TODO: use actual urlencode?
+        results = self.get('suggest', {'q': name.replace(' ', '%2C'})['Records']
         if results['@TotalRecords'] == 0:
             return []
         return [Person(raw) for raw in results['Record']]
