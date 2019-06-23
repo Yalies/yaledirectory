@@ -7,19 +7,21 @@ class Person(dict):
         self.update(raw)
         self.update(self.__dict__)
 
-        self.directory_title = raw['DirectoryTitle']
-        self.display_name = raw['DisplayName']
-        self.first_name = raw['FirstName']
-        self.known_as = raw['KnownAs']
-        self.last_name = raw['LastName']
-        self.netid = raw['NetId']
-        self.phone_number = raw['PhoneNumber']
-        self.primary_organization_name = raw['PrimaryOrganizationName']
-        self.primary_school_code = raw['PrimarySchoolCode']
-        self.primary_school_name = raw['PrimarySchoolName']
-        self.student_curriculum = raw['StudentCurriculum']
-        self.student_expeccted_graduation_year = raw['StudentExpectedGraduationYear']
-        self.upi = raw['UPI']
+        self.directory_title = raw.get('DirectoryTitle')
+        self.display_name = raw.get('DisplayName')
+        self.first_name = raw.get('FirstName')
+        self.known_as = raw.get('KnownAs')
+        self.last_name = raw.get('LastName')
+        self.matched = raw.get('Matched')
+        self.netid = raw.get('NetId')
+        self.phone_number = raw.get('PhoneNumber')
+        self.primary_organization_name = raw.get('PrimaryOrganizationName')
+        self.primary_school_code = raw.get('PrimarySchoolCode')
+        self.primary_school_name = raw.get('PrimarySchoolName')
+        self.residential_college_name = raw.get('ResidentialCollegeName')
+        self.student_curriculum = raw.get('StudentCurriculum')
+        self.student_expeccted_graduation_year = raw.get('StudentExpectedGraduationYear')
+        self.upi = raw.get('UPI')
 
 
 class YaleDirectory:

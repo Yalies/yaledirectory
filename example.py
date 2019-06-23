@@ -4,4 +4,8 @@ import yaledirectory
 api = yaledirectory.YaleDirectory()
 
 from pprint import pprint
-pprint(api.search('Erik'))
+res = api.search('Erik')
+keys = []
+for item in res:
+    keys += list(item.keys())
+print(list(set(keys)))
