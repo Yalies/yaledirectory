@@ -8,10 +8,10 @@ class Person(dict):
         self.update(self.__dict__)
 
         self.directory_title = raw.get('DirectoryTitle')
-        self.display_name = raw.get('DisplayName')
         self.first_name = raw.get('FirstName')
         self.known_as = raw.get('KnownAs')
         self.last_name = raw.get('LastName')
+        self.display_name = raw.get('DisplayName', self.known_as + ' ' + self.last_name)
         self.matched = raw.get('Matched')
         self.netid = raw.get('NetId')
         self.phone_number = raw.get('PhoneNumber')
