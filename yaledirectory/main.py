@@ -58,10 +58,14 @@ class YaleDirectory:
 
     def search(self, name: str):
         # TODO: use actual urlencode?
-        results = self.get('suggest', {'q': name.replace(' ', '%2C'})['Records']
-        if results['@TotalRecords'] == 0:
+        result = self.get('suggest', {'q': name.replace(' ', '%2C')})['Records']
+        num_results = int(result['@TotalRecords'])
+        if num_results == 0:
             return []
-        return [Person(raw) for raw in results['Record']]
+        record = result['Record']
+        if num_results == 1:
+            record = [record]
+        return [Person(raw) for raw in record]
 
     # TODO: unacceptable name
     """
