@@ -27,8 +27,16 @@ class Person(dict):
 class YaleDirectory:
     API_ROOT = 'https://directory.yale.edu/'
 
-    def __init__(self):
-        pass
+    def __init__(self, netid=None, password=None):
+        self.session = requests.Session()
+        if netid and password:
+            auth = self.session.post('https://secure.its.yale.edu/cas/login',
+                                     data={'username': netid,
+                                           'password': password,
+                                           'execution': 'e1s1',
+                                           '_eventId': 'submit',
+                                           'service': '',})
+            print(auth.ok)
 
     def get(self, endpoint: str, params: dict = {}):
         """
@@ -36,7 +44,7 @@ class YaleDirectory:
 
         :param params: dictionary of custom params to add to request.
         """
-        request = requests.get(self.API_ROOT + endpoint, params=params)
+        request = self.session.get(self.API_ROOT + endpoint, params=params)
         if request.ok:
             return request.json()
         else:
@@ -65,10 +73,9 @@ class YaleDirectory:
         record = result['Record']
         if num_results == 1:
             record = [record]
+        print(record)
         return [Person(raw) for raw in record]
 
     # TODO: unacceptable name
-    """
     def request(self, name: str):
         return self.post('api', {'peoplesearch': [{'netid': '', 'queryType': 'term', 'query': [{'pattern': 'Erik'}]}]})
-    """
