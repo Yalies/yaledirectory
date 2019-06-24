@@ -29,6 +29,17 @@ class YaleDirectory:
 
     def __init__(self, netid=None, password=None):
         self.session = requests.Session()
+        self.session.headers.update({
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Cache-Control': 'max-age=0',
+            'Connection': 'keep-alive',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Host': 'secure.its.yale.edu',
+            'Origin': 'https://secure.its.yale.edu',
+            'Referer': 'https://secure.its.yale.edu/cas/login',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+        })
         if netid and password:
             auth = self.session.post('https://secure.its.yale.edu/cas/login',
                                      data={'username': netid,
@@ -36,7 +47,6 @@ class YaleDirectory:
                                            'execution': 'e1s1',
                                            '_eventId': 'submit',
                                            'service': '',})
-            print(auth.ok)
 
     def get(self, endpoint: str, params: dict = {}):
         """
@@ -57,7 +67,7 @@ class YaleDirectory:
 
         :param params: dictionary of custom data to add to request.
         """
-        request = requests.post(self.API_ROOT + endpoint, json=data)
+        request = self.session.post(self.API_ROOT + endpoint, json=data)
         if request.ok:
             return request.json()
         else:

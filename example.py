@@ -2,7 +2,7 @@ import yaledirectory
 import os
 
 # "api" name can be whatever is most convenient for your program
-api = yaledirectory.YaleDirectory(os.environ['NETID'], os.environ['YALE_PASSWORD'])
+api = yaledirectory.YaleDirectory(os.environ['YALE_NETID'], os.environ['YALE_PASSWORD'])
 
 from pprint import pprint
 results = api.search('George Castillo')
