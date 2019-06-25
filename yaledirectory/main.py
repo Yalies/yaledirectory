@@ -1,5 +1,6 @@
 import requests
 import re
+from lxml import html
 
 
 class Person(dict):
@@ -26,10 +27,11 @@ class Person(dict):
 
 class YaleDirectory:
     API_ROOT = 'https://directory.yale.edu/'
+    LOGIN_URL = 'https://secure.its.yale.edu/cas/login'
 
     def __init__(self, netid=None, password=None):
-        self.session = requests.Session()
-        self.session.headers.update({
+        self.session = requests.session()
+        headers = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
             'Accept-Encoding': 'gzip, deflate, br',
             'Cache-Control': 'max-age=0',
@@ -39,14 +41,21 @@ class YaleDirectory:
             'Origin': 'https://secure.its.yale.edu',
             'Referer': 'https://secure.its.yale.edu/cas/login',
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
-        })
+        }
+        self.session.headers.update(headers)
         if netid and password:
-            auth = self.session.post('https://secure.its.yale.edu/cas/login',
+            login_page = self.session.get(self.LOGIN_URL)
+            tree = html.fromstring(login_page.text)
+            execution = list(set(tree.xpath("//input[@name='execution']/@value")))[0]
+            _eventId = list(set(tree.xpath("//input[@name='_eventId']/@value")))[0]
+            auth = self.session.post(self.LOGIN_URL,
                                      data={'username': netid,
                                            'password': password,
-                                           'execution': 'e1s1',
-                                           '_eventId': 'submit',
-                                           'service': '',})
+                                           'execution': execution,
+                                           '_eventId': _eventId,
+                                           'service': 'https://google.com',},
+                                     headers=headers)
+            print(self.session.cookies)
 
     def get(self, endpoint: str, params: dict = {}):
         """
