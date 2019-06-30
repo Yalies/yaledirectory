@@ -12,7 +12,7 @@ class Person(dict):
         self.first_name = raw.get('FirstName')
         self.known_as = raw.get('KnownAs')
         self.last_name = raw.get('LastName')
-        self.display_name = raw.get('DisplayName', self.known_as + ' ' + self.last_name)
+        self.display_name = raw.get('DisplayName', (self.known_as or self.first_name) + ' ' + self.last_name)
         self.matched = raw.get('Matched')
         self.netid = raw.get('NetId')
         self.phone_number = raw.get('PhoneNumber')
@@ -29,8 +29,8 @@ class YaleDirectory:
     API_ROOT = 'https://directory.yale.edu/'
     LOGIN_URL = 'https://secure.its.yale.edu/cas/login'
 
-    def __init__(self, netid=None, password=None):
-        self.session = requests.session()
+    def __init__(self, netid, password):
+        self.session = requests.Session()
         headers = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
             'Accept-Encoding': 'gzip, deflate, br',
@@ -48,14 +48,17 @@ class YaleDirectory:
             tree = html.fromstring(login_page.text)
             execution = list(set(tree.xpath("//input[@name='execution']/@value")))[0]
             _eventId = list(set(tree.xpath("//input[@name='_eventId']/@value")))[0]
+            data = {
+                'username': netid,
+                'password': password,
+                'execution': execution,
+                '_eventId': _eventId,
+                'service': self.API_ROOT,
+            }
             auth = self.session.post(self.LOGIN_URL,
-                                     data={'username': netid,
-                                           'password': password,
-                                           'execution': execution,
-                                           '_eventId': _eventId,
-                                           'service': 'https://google.com',},
+                                     data=data,
                                      headers=headers)
-            print(self.session.cookies)
+            open_directory = self.session.post(self.API_ROOT)
 
     def get(self, endpoint: str, params: dict = {}):
         """
