@@ -23,42 +23,20 @@ class Person(dict):
         self.student_curriculum = raw.get('StudentCurriculum')
         self.student_expected_graduation_year = raw.get('StudentExpectedGraduationYear')
         self.upi = raw.get('UPI')
+        self.internal_location = raw.get('InternalLocation')
 
 
 class YaleDirectory:
     API_ROOT = 'https://directory.yale.edu/'
     LOGIN_URL = 'https://secure.its.yale.edu/cas/login'
 
-    def __init__(self, netid, password):
+    def __init__(self, people_search_session_cookie, csrf_token):
         self.session = requests.Session()
         headers = {
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Cache-Control': 'max-age=0',
-            'Connection': 'keep-alive',
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Host': 'secure.its.yale.edu',
-            'Origin': 'https://secure.its.yale.edu',
-            'Referer': 'https://secure.its.yale.edu/cas/login',
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+            'X-CSRF-Token': 'mcz/aFs98WvNml9m3wlhmQTGKkX5Pa9fclcLnuxWFHfzpLBAWD4rRYZFQglzq8sSssDB0PibeS5Yh6iaSBTEYQ==',
+            'Content-Type': 'application/json',
         }
         self.session.headers.update(headers)
-        if netid and password:
-            login_page = self.session.get(self.LOGIN_URL)
-            tree = html.fromstring(login_page.text)
-            execution = list(set(tree.xpath("//input[@name='execution']/@value")))[0]
-            _eventId = list(set(tree.xpath("//input[@name='_eventId']/@value")))[0]
-            data = {
-                'username': netid,
-                'password': password,
-                'execution': execution,
-                '_eventId': _eventId,
-                'service': self.API_ROOT,
-            }
-            auth = self.session.post(self.LOGIN_URL,
-                                     data=data,
-                                     headers=headers)
-            open_directory = self.session.post(self.API_ROOT)
 
     def get(self, endpoint: str, params: dict = {}):
         """
