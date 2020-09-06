@@ -1,6 +1,5 @@
 import requests
 import re
-from lxml import html
 
 
 class Person(dict):
@@ -26,7 +25,7 @@ class Person(dict):
         self.internal_location = raw.get('InternalLocation')
 
 
-class YaleDirectory:
+class API:
     API_ROOT = 'https://directory.yale.edu/'
     LOGIN_URL = 'https://secure.its.yale.edu/cas/login'
 
@@ -35,6 +34,9 @@ class YaleDirectory:
         headers = {
             'X-CSRF-Token': 'mcz/aFs98WvNml9m3wlhmQTGKkX5Pa9fclcLnuxWFHfzpLBAWD4rRYZFQglzq8sSssDB0PibeS5Yh6iaSBTEYQ==',
             'Content-Type': 'application/json',
+        }
+        cookies = {
+            '_people_search_session': people_search_session_cookie,
         }
         self.session.headers.update(headers)
 
