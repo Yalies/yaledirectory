@@ -54,16 +54,41 @@ class API:
             # TODO: Can we be more helpful?
             raise Exception('API request failed. Data returned: ' + request.text)
 
-    def people(self, search_term: str = '', netid: str = ''):
+    def people(self, search_term: str = '', address: str = '',
+                                            department: str = '',
+                                            email: str = '',
+                                            first_name: str = '',
+                                            last_name: str = '',
+                                            netid: str = '',
+                                            phone: str = '',
+                                            title: str = '',
+                                            upi: str = ''):
+        if search_term:
+            search_body = {
+                'netid': '',
+                'queryType': 'term',
+                'query': [
+                    {'pattern': search_term}
+                ]
+            }
+        else:
+            search_body = {
+                'netid': '',
+                'queryType': 'field',
+                'query': {
+                    'address': address,
+                    'department': department,
+                    'email': email,
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'netid': netid,
+                    'phone': phone,
+                    'title': title,
+                    'upi': upi,
+                }
+            }
         body = {
             'peoplesearch': [
-                {
-                    'netid': netid,
-                    'queryType': 'netid',
-                    'query': [
-                        {'pattern': search_term}
-                    ]
-                }
             ]
         }
         result = self.post('api', body)
