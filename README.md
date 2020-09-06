@@ -48,14 +48,13 @@ The parameters for these methods are the same:
 # Fetch a list of everyone matching the search_term Dylan.
 # Note: search_term is assumed to be the first parameter.
 dylans = api.people('Dylan')
-
+# Get single user, by netid
 erik = api.person(netid='ekb33')
-
+# Get people with the first name Josh in Grace Hopper in Yale College
 joshes_in_hopper = api.people(first_name='Josh', college='GH', school='YC')
-
+# Get people named John in the Public Health department
 public_health_johns = api.people(search_term='John', department='Public Health')
 ```
-
 See `example.py` for further usage examples.
 
 ## Author
