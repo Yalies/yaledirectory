@@ -5,7 +5,7 @@ import os
 api = yaledirectory.API(os.environ['PEOPLE_SEARCH_SESSION'], os.environ['CSRF_TOKEN'])
 
 from pprint import pprint
-results = api.search('George Castillo')
+results = api.people('Yamil')
 for person in results:
     print(f'{person.display_name} {person.residential_college_name}')
-print(api.request('Erik Boesen'))
+print(api.person(netid='ekb33'))
