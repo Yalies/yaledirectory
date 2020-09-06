@@ -99,7 +99,6 @@ class API:
             ]
         }
         result = self.post('api', body)
-        print(result)
         records = result['Records']
         total_records = records['TotalRecords']
         if total_records == 0:
