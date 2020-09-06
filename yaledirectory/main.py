@@ -66,18 +66,22 @@ class API:
             # TODO: Can we be more helpful?
             raise Exception('API request failed. Data returned: ' + request.text)
 
-    def search(self, name: str):
-        # TODO: use actual urlencode?
-        result = self.get('suggest', {'q': name.replace(' ', '%2C')})['Records']
+    # TODO: unacceptable name
+    def request(self, name: str):
+        body = {
+            'peoplesearch': [
+                {
+                    'netid': '',
+                    'queryType': 'term',
+                    'query': [
+                        {'pattern': 'Erik'}
+                    ]
+                }
+            ]
+        }
+        result = self.post('api', body)
         num_results = int(result['@TotalRecords'])
         if num_results == 0:
             return []
         record = result['Record']
-        if num_results == 1:
-            record = [record]
-        print(record)
         return [Person(raw) for raw in record]
-
-    # TODO: unacceptable name
-    def request(self, name: str):
-        return self.post('api', {'peoplesearch': [{'netid': '', 'queryType': 'term', 'query': [{'pattern': 'Erik'}]}]})
