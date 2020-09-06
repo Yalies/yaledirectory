@@ -125,3 +125,4 @@ class API:
         people = self.people(*args, **kwargs)
         if len(people) != 0:
             return people[0]
+        return None
