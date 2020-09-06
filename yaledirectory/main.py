@@ -104,7 +104,10 @@ class API:
         total_records = records['TotalRecords']
         if total_records == 0:
             return []
-        return [Person(raw) for raw in records['Record']]
+        record = records['Record']
+        if total_records == 1:
+            record = [record]
+        return [Person(raw) for raw in record]
 
     def person(self, *args, **kwargs):
         people = self.people(*args, **kwargs)
