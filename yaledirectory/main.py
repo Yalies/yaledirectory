@@ -62,7 +62,9 @@ class API:
                                             netid: str = '',
                                             phone: str = '',
                                             title: str = '',
-                                            upi: str = ''):
+                                            upi: str = '',
+                                            college: str = '',
+                                            school: str = ''):
         if search_term:
             search_body = {
                 'netid': '',
@@ -72,23 +74,28 @@ class API:
                 ]
             }
         else:
+            query = {
+                'address': address,
+                'department': department,
+                'email': email,
+                'firstname': first_name,
+                'lastname': last_name,
+                'netid': netid,
+                'phone': phone,
+                'title': title,
+                'upi': upi,
+                'college': college,
+                'school': school,
+            }
+            query = {key: val for key, val in query.items() if val}
             search_body = {
                 'netid': '',
                 'queryType': 'field',
-                'query': {
-                    'address': address,
-                    'department': department,
-                    'email': email,
-                    'first_name': first_name,
-                    'last_name': last_name,
-                    'netid': netid,
-                    'phone': phone,
-                    'title': title,
-                    'upi': upi,
-                }
+                'query': query
             }
         body = {
             'peoplesearch': [
+                search_body
             ]
         }
         result = self.post('api', body)

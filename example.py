@@ -4,7 +4,6 @@ import os
 # "api" name can be whatever is most convenient for your program
 api = yaledirectory.API(os.environ['PEOPLE_SEARCH_SESSION'], os.environ['CSRF_TOKEN'])
 
-from pprint import pprint
 results = api.people('Yamil')
 for person in results:
     print(f'{person.display_name} {person.residential_college_name}')
