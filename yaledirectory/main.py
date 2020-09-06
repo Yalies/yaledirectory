@@ -32,26 +32,14 @@ class API:
     def __init__(self, people_search_session_cookie, csrf_token):
         self.session = requests.Session()
         headers = {
-            'X-CSRF-Token': 'mcz/aFs98WvNml9m3wlhmQTGKkX5Pa9fclcLnuxWFHfzpLBAWD4rRYZFQglzq8sSssDB0PibeS5Yh6iaSBTEYQ==',
+            'X-CSRF-Token': csrf_token,
             'Content-Type': 'application/json',
         }
         cookies = {
             '_people_search_session': people_search_session_cookie,
         }
         self.session.headers.update(headers)
-
-    def get(self, endpoint: str, params: dict = {}):
-        """
-        Make a GET request to the API.
-
-        :param params: dictionary of custom params to add to request.
-        """
-        request = self.session.get(self.API_ROOT + endpoint, params=params)
-        if request.ok:
-            return request.json()
-        else:
-            # TODO: Can we be more helpful?
-            raise Exception('API request failed. Data returned: ' + request.text)
+        self.session.cookies.update(cookies)
 
     def post(self, endpoint: str, data: dict = {}):
         """
@@ -66,22 +54,27 @@ class API:
             # TODO: Can we be more helpful?
             raise Exception('API request failed. Data returned: ' + request.text)
 
-    # TODO: unacceptable name
-    def request(self, name: str):
+    def people(self, search_term: str = '', netid: str = ''):
         body = {
             'peoplesearch': [
                 {
-                    'netid': '',
-                    'queryType': 'term',
+                    'netid': netid,
+                    'queryType': 'netid',
                     'query': [
-                        {'pattern': 'Erik'}
+                        {'pattern': search_term}
                     ]
                 }
             ]
         }
         result = self.post('api', body)
-        num_results = int(result['@TotalRecords'])
-        if num_results == 0:
+        print(result)
+        records = result['Records']
+        total_records = records['TotalRecords']
+        if total_records == 0:
             return []
-        record = result['Record']
-        return [Person(raw) for raw in record]
+        return [Person(raw) for raw in records['Record']]
+
+    def person(self, *args, **kwargs):
+        people = self.people(*args, **kwargs)
+        if len(people) != 0:
+            return people[0]
