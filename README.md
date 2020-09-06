@@ -2,7 +2,7 @@
 
 > Python library for interfacing with the undocumented Yale Directory API.
 
-[API documentation](https://developers.yale.edu/directory)
+[View Directory](https://directory.yale.edu)
 
 ## Setup
 First, install the module:
