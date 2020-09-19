@@ -2,9 +2,6 @@
 
 from setuptools import setup
 
-with open('requirements.txt') as f:
-    requirements = f.read().splitlines()
-
 setup(name='yaledirectory',
       version='1.1.1',
       description='Library for fetching data from the Yale Directory API.',
@@ -13,4 +10,4 @@ setup(name='yaledirectory',
       author_email='me@erikboesen.com',
       license='GPL',
       packages=['yaledirectory'],
-      install_requires=requirements)
+      install_requires=['requests', 'unidecode'])
