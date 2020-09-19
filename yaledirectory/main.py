@@ -4,6 +4,9 @@ import unidecode
 
 
 class Person(dict):
+    def __repr__(self):
+        return self.__class__.__name__ + '(' + str(self.__dict__) + ')'
+
     def __init__(self, raw):
         self.update(raw)
         self.update(self.__dict__)
