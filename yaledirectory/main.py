@@ -83,7 +83,7 @@ class API:
                 'netid': '',
                 'queryType': 'term',
                 'query': [
-                    {'pattern': search_term}
+                    {'pattern': ','.join(search_term.split())}
                 ]
             }
         else:
