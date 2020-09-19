@@ -46,7 +46,7 @@ class API:
     API_ROOT = 'https://directory.yale.edu/'
     LOGIN_URL = 'https://secure.its.yale.edu/cas/login'
 
-    NAME_UNACCEPTABLE_RE = re.compile(r'[- ]')
+    NAME_UNACCEPTABLE_RE = re.compile(r'[^a-zA-Z]+')
 
     def __init__(self, people_search_session_cookie, csrf_token):
         self.session = requests.Session()
@@ -74,8 +74,8 @@ class API:
             raise Exception('API request failed. Data returned: ' + request.text)
 
     def clean_name(self, name):
-        name = self.NAME_UNACCEPTABLE_RE.sub('', name)
         name = unidecode.unidecode(name)
+        name = self.NAME_UNACCEPTABLE_RE.sub('', name)
         return name
 
     def people(self, search_term: str = '', address: str = '',
