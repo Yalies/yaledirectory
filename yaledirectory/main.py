@@ -44,7 +44,6 @@ class Person(dict):
 
 class API:
     API_ROOT = 'https://directory.yale.edu/'
-    LOGIN_URL = 'https://secure.its.yale.edu/cas/login'
 
     NAME_UNACCEPTABLE_RE = re.compile(r'[^a-zA-Z]+')
 
