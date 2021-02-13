@@ -88,7 +88,7 @@ class API:
                                             upi: str = '',
                                             college: str = '',
                                             school: str = '',
-                                            include_complete: bool = False):
+                                            include_total: bool = False):
         if search_term:
             search_body = {
                 'netid': '',
@@ -131,9 +131,8 @@ class API:
         if total_records == 1:
             record = [record]
         people = [Person(raw) for raw in record]
-        complete = (total_records == len(people))
-        if include_complete:
-            return people, complete
+        if include_total:
+            return people, total_records
         return people
 
     def person(self, *args, **kwargs):
