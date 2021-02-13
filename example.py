@@ -11,3 +11,8 @@ erik = api.person(netid='ekb33')
 print(erik.email)
 results = api.people(search_term='John', department='Public Health')
 print('Found at least %d people named John in Public Health department.' % len(results))
+
+print('Performing a broad request with completion checking')
+results, complete = api.people(netid='e', include_complete=True)
+print('Found %d results.' % len(results))
+print(complete)
