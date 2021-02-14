@@ -126,11 +126,12 @@ class API:
         records = result['Records']
         total_records = records['TotalRecords']
         if total_records == 0:
-            return []
-        record = records['Record']
-        if total_records == 1:
-            record = [record]
-        people = [Person(raw) for raw in record]
+            people = []
+        else:
+            record = records['Record']
+            if total_records == 1:
+                record = [record]
+            people = [Person(raw) for raw in record]
         if include_total:
             return people, total_records
         return people
