@@ -1,8 +1,15 @@
-# yaledirectory [![PyPI version](https://badge.fury.io/py/yaledirectory.svg)](https://badge.fury.io/py/yaledirectory)
+# [yaledirectory](https://pypi.org/project/yaledirectory) [![PyPI version](https://badge.fury.io/py/yaledirectory.svg)](https://badge.fury.io/py/yaledirectory)
 
-> Python library for interfacing with the undocumented Yale Directory API.
+> Unofficial Python interface for the undocumented Yale Directory API.
 
-[View Directory](https://directory.yale.edu)
+## Note
+**This package may not be the right tool for your project.**
+
+While it is rigorously designed to provide the cleanest possible interface to the [Yale Directory](https://directory.yale.edu), that platform has unavoidable limitations. Interaction requires two authenticating tokens to be pulled through browser developer tools, and because these tokens handle short-term CAS logins, they must be manually re-fetched every few days. This means that long term authentication cannot be maintained without frustrating manual work.
+
+Beyond the practical challenges of establishing a long term interface with the Directory, the data contained within is often spotty, duplicated, poorly formatted, and difficult to query effectively. Searching is also difficult because results are limited to 25 people at a time and cannot be paginated.
+
+It is thus highly recommended that applications wishing to access Yale identity data make use of the Yalies API instead. [Yalies](https://yalies.io) is a student-run platform, providing clean data drawn from multiple Yale sources. Data can be queried through a flexible and thoughtfully-designed API that allows long term authentication via a formal key that won't expire. To learn more and get a key, see [the API documentation](https://yalies.io/apidocs). An official Python wrapper for the API can be found [here](https://pypi.org/project/yalies) ([GitHub](https://github.com/Yalies/python-yalies)).
 
 ## Setup
 First, install the module:
