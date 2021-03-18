@@ -181,7 +181,7 @@ class API:
             return people[0]
         return None
 
-    def name_pronunciation(self, email):
+    def pronounce(self, email):
         try:
             return Pronunciation(self.get('name_coach', {
                 'email': email
