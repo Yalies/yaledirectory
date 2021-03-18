@@ -86,11 +86,23 @@ class API:
         self.session.headers.update(headers)
         self.session.cookies.update(cookies)
 
+    def get(self, endpoint: str, params: dict = {}):
+        """
+        Make a GET request to the API.
+
+        :param params: dictionary of URL params to add to request.
+        """
+        request = self.session.get(self.API_ROOT + endpoint, params=params)
+        if request.ok:
+            return request.json()
+        else:
+            raise Exception('API request failed. Data returned: ' + request.text)
+
     def post(self, endpoint: str, data: dict = {}):
         """
         Make a POST request to the API.
 
-        :param params: dictionary of custom data to add to request.
+        :param data: JSON data to use as request body.
         """
         request = self.session.post(self.API_ROOT + endpoint, json=data)
         if request.ok:
@@ -168,3 +180,11 @@ class API:
         if len(people) != 0:
             return people[0]
         return None
+
+    def name_pronunciation(self, email):
+        try:
+            return Pronunciation(self.get('name_coach', {
+                'email': email
+            }))
+        except Exception:
+            return None
