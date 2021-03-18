@@ -42,6 +42,33 @@ class Person(dict):
         self.postal_address = raw.get('PostalAddress')
 
 
+class Pronunciation(dict):
+    def __repr__(self):
+        return self.__class__.__name__ + '(' + str(self.__dict__) + ')'
+
+    def __init__(self, raw):
+        self.update(raw)
+        self.update(self.__dict__)
+
+        self.first_name = raw.get('first_name')
+        self.last_name = raw.get('last_name')
+        self.email = raw.get('email')
+        self.recording_link = raw.get('recording_link')
+        # Courtesy: provide link without apparently useless URL params
+        self.recording_url = self.recording_link.split('?')[0]
+        self.name_badge_link = raw.get('name_badge_link')
+        self.phonetic_spelling = raw.get('phonetic_spelling')
+        self.notes = raw.get('notes')
+        self.custom_objects = raw.get('custom_objects')
+        self.pronouns = None
+        if self.custom_objects:
+            self.pronouns = self.custom_objects.get('gender_pronouns')
+
+        # HTML blobs
+        self.embed_image = raw.get('embed_image')
+        self.embed_iframe = raw.get('embed_iframe')
+
+
 class API:
     API_ROOT = 'https://directory.yale.edu/'
 
