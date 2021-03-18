@@ -3,10 +3,12 @@ import re
 import unidecode
 
 
-class Person(dict):
+class _Model(dict):
     def __repr__(self):
         return self.__class__.__name__ + '(' + str(self.__dict__) + ')'
 
+
+class Person(_Model):
     def __init__(self, raw):
         self.update(raw)
         self.update(self.__dict__)
@@ -42,10 +44,7 @@ class Person(dict):
         self.postal_address = raw.get('PostalAddress')
 
 
-class Pronunciation(dict):
-    def __repr__(self):
-        return self.__class__.__name__ + '(' + str(self.__dict__) + ')'
-
+class Pronunciation(_Model):
     def __init__(self, raw):
         self.update(raw)
         self.update(self.__dict__)
