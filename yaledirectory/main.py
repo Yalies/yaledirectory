@@ -72,6 +72,7 @@ class API:
     API_ROOT = 'https://directory.yale.edu/'
 
     NAME_UNACCEPTABLE_RE = re.compile(r'[^a-zA-Z]+')
+    RETRIES = 3
 
     def __init__(self, people_search_session_cookie, csrf_token):
         self.session = requests.Session()
@@ -128,7 +129,7 @@ class API:
                                             school: str = '',
                                             include_total: bool = False):
         # Loop to support retries
-        for i in range(3):
+        for i in range(self.RETRIES):
             if search_term:
                 search_body = {
                     'netid': '',
