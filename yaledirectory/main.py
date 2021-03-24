@@ -127,52 +127,56 @@ class API:
                                             college: str = '',
                                             school: str = '',
                                             include_total: bool = False):
-        if search_term:
-            search_body = {
-                'netid': '',
-                'queryType': 'term',
-                'query': [
-                    {'pattern': ','.join(search_term.split())}
+        # Loop to support retries
+        for i in range(3):
+            if search_term:
+                search_body = {
+                    'netid': '',
+                    'queryType': 'term',
+                    'query': [
+                        {'pattern': ','.join(search_term.split())}
+                    ]
+                }
+            else:
+                query = {
+                    'address': address,
+                    'department': department,
+                    'email': email,
+                    'firstname': self.clean_name(first_name),
+                    'lastname': self.clean_name(last_name),
+                    'netid': netid,
+                    'phone': phone,
+                    'title': title,
+                    'upi': upi,
+                    'college': college,
+                    'school': school,
+                }
+                query = {key: val for key, val in query.items() if val}
+                search_body = {
+                    'netid': '',
+                    'queryType': 'field',
+                    'query': query
+                }
+            body = {
+                'peoplesearch': [
+                    search_body
                 ]
             }
-        else:
-            query = {
-                'address': address,
-                'department': department,
-                'email': email,
-                'firstname': self.clean_name(first_name),
-                'lastname': self.clean_name(last_name),
-                'netid': netid,
-                'phone': phone,
-                'title': title,
-                'upi': upi,
-                'college': college,
-                'school': school,
-            }
-            query = {key: val for key, val in query.items() if val}
-            search_body = {
-                'netid': '',
-                'queryType': 'field',
-                'query': query
-            }
-        body = {
-            'peoplesearch': [
-                search_body
-            ]
-        }
-        result = self.post('api', body)
-        records = result['Records']
-        total_records = records['TotalRecords']
-        if total_records == 0:
-            people = []
-        else:
-            record = records['Record']
-            if total_records == 1:
-                record = [record]
-            people = [Person(raw) for raw in record]
-        if include_total:
-            return people, total_records
-        return people
+            result = self.post('api', body)
+            records = result.get('Records')
+            if not records:
+                continue
+            total_records = records['TotalRecords']
+            if total_records == 0:
+                people = []
+            else:
+                record = records['Record']
+                if total_records == 1:
+                    record = [record]
+                people = [Person(raw) for raw in record]
+            if include_total:
+                return people, total_records
+            return people
 
     def person(self, *args, **kwargs):
         people = self.people(*args, **kwargs)
