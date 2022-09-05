@@ -3,9 +3,9 @@
 > Unofficial Python interface for the undocumented Yale Directory API.
 
 ## Note
-**This package may not be the right tool for your project.**
+**This package is probably not the right tool for your project.**
 
-While it is rigorously designed to provide the cleanest possible interface to the [Yale Directory](https://directory.yale.edu), that platform has unavoidable limitations. Interaction requires two authenticating tokens to be pulled through browser developer tools, and because these tokens handle short-term CAS logins, they must be manually re-fetched every few days. This means that long term authentication cannot be maintained without frustrating manual work.
+While it is rigorously designed to provide the cleanest possible interface to the [Yale Directory](https://directory.yale.edu) API, that platform has unavoidable limitations. Interaction requires two authenticating tokens to be pulled through browser developer tools, and because these tokens handle short-term CAS logins, they must be manually re-fetched every few days. This means that long term authentication cannot be maintained without frustrating manual work.
 
 Beyond the practical challenges of establishing a long term interface with the Directory, the data contained within is often spotty, duplicated, poorly formatted, and difficult to query effectively. Searching is also difficult because results are limited to 25 people at a time and cannot be paginated.
 
